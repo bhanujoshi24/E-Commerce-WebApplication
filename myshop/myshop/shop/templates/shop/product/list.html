@@ -1,0 +1,43 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <a class="navbar-brand" >Categories</a>
+ <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+<div id="sidebar" class="collapse navbar-collapse" id="collapsibleNavbar">
+
+    <ul class="navbar-nav">
+        <li {% if not category %}class="selected" {% endif %} class="nav-item"><a href="{% url 'shop:product_list' %}" class="nav-link">ALl</a></li>
+        {% for c in categories %}
+        <li {% if category.slug == c.slug %} class="selected" {% endif %} class="nav-item"><a href="{{ c.get_absolute_url }}" class="nav-link">{{c.name}}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+</nav>
+<div id="main" class="product-list">
+    <h1 style="font-style: italic; padding:0px 40%; color:#02040f;">{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
+
+    {% for product in products %}
+    <div class="row container-fluid">
+    <div class="item" >
+        <a href="{{ product.get_absolute_url }}">
+            <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png'%}{% endif %}" style=" padding: 25px 50px; " class="gallery" height="200" class="img img-fluid">
+        </a>
+        <a href="{{product.get_absolute_url }}" class="text-justify font-weight-bold text-reset ">{{product.name}}</a>
+        <br>
+        <span class="text-center font-weight-bold text-reset" style=" padding: 55px 70px; font-size:25px;">${{ product.price }}</span>
+        <hr>
+    </div>
+</div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
